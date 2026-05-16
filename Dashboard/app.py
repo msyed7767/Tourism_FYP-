@@ -294,21 +294,29 @@ if selected_page == "Dashboard":
     st.markdown('<div class="main-title">Pakistan Tourism Intelligence Platform</div>', unsafe_allow_html=True)
     st.markdown('<div class="subtitle"><i class="fas fa-chart-line"></i> Real-time Analytics & Business Intelligence</div>', unsafe_allow_html=True)
     
-    # Executive Summary
+       # Executive Summary with better styling
     if len(filtered_df) > 1:
         latest_tourists = filtered_df['Total_Tourists'].iloc[-1]
         prev_tourists = filtered_df['Total_Tourists'].iloc[-2]
         growth = ((latest_tourists - prev_tourists) / prev_tourists) * 100
         best_year = filtered_df.loc[filtered_df['Total_Tourists'].idxmax(), 'Year']
+        best_value = filtered_df['Total_Tourists'].max()
         
         st.markdown(f"""
         <div class="executive-card">
-            <i class="fas fa-chart-line" style="color: #FFD700;"></i> 
-            <strong>Executive Summary:</strong> Tourism grew by <span style="color: #FFD700;">{growth:.1f}%</span> to <span style="color: #FFD700;">{latest_tourists:.1f}M</span> visitors. 
-            Best year was <span style="color: #FFD700;">{int(best_year)}</span> with {filtered_df[filtered_df['Year']==best_year]['Total_Tourists'].values[0]:.1f}M tourists.
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <i class="fas fa-chart-line" style="color: #FFD700; font-size: 1.2rem;"></i>
+                <span style="color: #FFD700; font-weight: 600;">EXECUTIVE SUMMARY</span>
+            </div>
+            <div style="color: #FFFFFF; font-size: 0.9rem; line-height: 1.6;">
+                Pakistan's tourism sector is experiencing 
+                <span style="color: #00FF88; font-weight: 600;">{growth:.1f}% YoY growth</span> 
+                with <span style="color: #FFD700; font-weight: 600;">{latest_tourists:.1f}M tourists</span> in {int(filtered_df['Year'].iloc[-1])}.
+                The best performing year was <span style="color: #FFD700; font-weight: 600;">{int(best_year)}</span> 
+                with <span style="color: #FFD700; font-weight: 600;">{best_value:.1f}M visitors</span>.
+            </div>
         </div>
         """, unsafe_allow_html=True)
-    
     # KPI Cards Row
     col1, col2, col3, col4 = st.columns(4)
     
