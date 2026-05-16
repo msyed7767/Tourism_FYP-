@@ -450,34 +450,88 @@ elif selected_page == "Forecast":
         future_years = np.arange(2025, 2031).reshape(-1, 1)
         predictions = model.predict(future_years)
         
+        # Better formatting for metric values
+        r2_score = model.score(X, y)
+        pred_2030 = predictions[-1]
+        annual_growth = model.coef_[0]
+        
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.metric("Model R² Score", f"{model.score(X, y):.3f}")
+            st.metric("Model R² Score", f"{r2_score:.3f}")
         with col2:
-            st.metric("2030 Prediction", f"{predictions[-1]:.1f}M")
+            st.metric("2030 Prediction", f"{pred_2030:.1f}M")
         with col3:
-            st.metric("Annual Growth", f"{model.coef_[0]:.2f}M")
+            st.metric("Annual Growth", f"{annual_growth:.2f}M")
         
         st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+        
         fig = go.Figure()
-        fig.add_trace(go.Scatter(x=filtered_df['Year'], y=filtered_df['Total_Tourists'],
-                                 mode='lines+markers', name='Historical',
-                                 line=dict(color='#00FFFF', width=3)))
-        fig.add_trace(go.Scatter(x=future_years.flatten(), y=predictions,
-                                 mode='lines+markers', name='Forecast',
-                                 line=dict(color='#FF6B6B', width=3, dash='dash')))
-        fig.update_layout(title="Tourism Forecast 2025-2030", 
-                         xaxis_title="Year", yaxis_title="Tourists (Millions)",
-                         template='plotly_dark', height=500,
-                         paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+        
+        # Historical data line
+        fig.add_trace(go.Scatter(
+            x=filtered_df['Year'], 
+            y=filtered_df['Total_Tourists'],
+            mode='lines+markers', 
+            name='Historical',
+            line=dict(color='#00FFFF', width=3),
+            marker=dict(color='#00FFFF', size=8)
+        ))
+        
+        # Forecast line
+        fig.add_trace(go.Scatter(
+            x=future_years.flatten(), 
+            y=predictions,
+            mode='lines+markers', 
+            name='Forecast',
+            line=dict(color='#FF6B6B', width=3, dash='dash'),
+            marker=dict(color='#FF6B6B', size=8)
+        ))
+        
+        # Update layout with proper colours
+        fig.update_layout(
+            title=dict(
+                text="Tourism Forecast 2025-2030",
+                font=dict(color='#00FFFF', size=20)
+            ),
+            xaxis=dict(
+                title=dict(text="Year", font=dict(color='#00FFFF', size=14)),
+                tickfont=dict(color='#FFFFFF', size=12),
+                gridcolor='rgba(255,255,255,0.1)',
+                showgrid=True
+            ),
+            yaxis=dict(
+                title=dict(text="Tourists (Millions)", font=dict(color='#00FFFF', size=14)),
+                tickfont=dict(color='#FFFFFF', size=12),
+                gridcolor='rgba(255,255,255,0.1)',
+                showgrid=True
+            ),
+            legend=dict(
+                font=dict(color='#FFFFFF', size=12),
+                bgcolor='rgba(0,0,0,0.5)'
+            ),
+            template='plotly_dark',
+            height=500,
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            hovermode='x unified'
+        )
+        
         st.plotly_chart(fig, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
         
-        forecast_df = pd.DataFrame({'Year': future_years.flatten(), 'Predicted Tourists (M)': predictions.round(1)})
+        # Forecast Table with better formatting
+        forecast_df = pd.DataFrame({
+            'Year': future_years.flatten(),
+            'Predicted Tourists (M)': predictions.round(1)
+        })
         st.dataframe(forecast_df, use_container_width=True)
+        
+        # Insight message
+        total_growth = ((predictions[-1] - predictions[0]) / predictions[0]) * 100
+        st.info(f"📈 **Forecast Insight:** Tourism is projected to {'increase' if total_growth > 0 else 'decrease'} by {abs(total_growth):.1f}% from 2025 to 2030.")
+        
     else:
-        st.warning("Not enough data for forecasting. Need at least 3 years of data.")
-
+        st.warning("⚠️ Not enough data for forecasting. Need at least 3 years of data.")
 # ==================== DATA PAGE ====================
 elif selected_page == "Data":
     st.markdown('<div class="main-title">Dataset Explorer</div>', unsafe_allow_html=True)
