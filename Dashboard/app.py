@@ -454,12 +454,225 @@ if selected_page == "Dashboard":
     st.plotly_chart(fig5, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ==================== FORECAST PAGE ====================
+# ==================== FORECAST PAGE WITH PROPHET ====================
 elif selected_page == "Forecast":
     st.markdown('<div class="main-title">AI-Powered Forecast 2025-2030</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle"><i class="fas fa-brain"></i> Machine Learning Predictions</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle"><i class="fas fa-brain"></i> Facebook Prophet Time Series Model</div>', unsafe_allow_html=True)
     
-    if len(filtered_df) >= 3:
+    try:
+        from prophet import Prophet
+        import warnings
+        warnings.filterwarnings('ignore')
+        
+        with st.spinner("Training Prophet Model on tourism data..."):
+            # Prepare data for Prophet
+            prophet_df = pd.DataFrame({
+                'ds': pd.to_datetime(filtered_df['Year'].astype(str) + '-01-01'),
+                'y': filtered_df['Total_Tourists'].values
+            })
+            
+            # Initialize and train Prophet model
+            model = Prophet(
+                yearly_seasonality=True,
+                weekly_seasonality=False,
+                daily_seasonality=False,
+                changepoint_prior_scale=0.05,
+                seasonality_prior_scale=10.0,
+                interval_width=0.95
+            )
+            model.fit(prophet_df)
+            
+            # Create future dataframe for 2025-2030
+            future = model.make_future_dataframe(periods=6, freq='YS')
+            forecast = model.predict(future)
+            
+            # Get forecast for 2025-2030
+            forecast_2025_2030 = forecast[forecast['ds'].dt.year >= 2025].copy()
+            
+            # Calculate model metrics
+            train_pred = model.predict(prophet_df)
+            from sklearn.metrics import mean_absolute_error, r2_score
+            mae = mean_absolute_error(prophet_df['y'], train_pred['yhat'][:len(prophet_df)])
+            r2 = r2_score(prophet_df['y'], train_pred['yhat'][:len(prophet_df)])
+            
+            # Display metrics in professional cards
+            st.markdown("### Model Performance Metrics")
+            col1, col2, col3, col4 = st.columns(4)
+            
+            with col1:
+                st.metric("Model R² Score", f"{r2:.3f}")
+                st.caption("Higher is better (0-1 scale)")
+            
+            with col2:
+                st.metric("Mean Absolute Error", f"{mae:.2f}M")
+                st.caption("Lower is better")
+            
+            with col3:
+                pred_2030 = forecast_2025_2030[forecast_2025_2030['ds'].dt.year == 2030]['yhat'].values[0]
+                st.metric("2030 Prediction", f"{pred_2030:.1f}M")
+                st.caption("Forecasted value")
+            
+            with col4:
+                lower_2030 = forecast_2025_2030[forecast_2025_2030['ds'].dt.year == 2030]['yhat_lower'].values[0]
+                upper_2030 = forecast_2025_2030[forecast_2025_2030['ds'].dt.year == 2030]['yhat_upper'].values[0]
+                st.metric("95% Confidence Interval", f"[{lower_2030:.1f} - {upper_2030:.1f}]M")
+                st.caption("Prediction range")
+            
+            st.markdown("---")
+            
+            # Forecast Chart with clear styling
+            st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title"><i class="fas fa-chart-line"></i> Prophet Model Forecast Visualization</div>', unsafe_allow_html=True)
+            
+            fig = go.Figure()
+            
+            # Historical data
+            fig.add_trace(go.Scatter(
+                x=filtered_df['Year'],
+                y=filtered_df['Total_Tourists'],
+                mode='lines+markers',
+                name='Historical Data',
+                line=dict(color='#00FFFF', width=3),
+                marker=dict(color='#00FFFF', size=10, symbol='circle')
+            ))
+            
+            # Forecast data
+            forecast_years = forecast_2025_2030['ds'].dt.year
+            fig.add_trace(go.Scatter(
+                x=forecast_years,
+                y=forecast_2025_2030['yhat'],
+                mode='lines+markers',
+                name='Prophet Forecast',
+                line=dict(color='#FF6B6B', width=3, dash='dash'),
+                marker=dict(color='#FF6B6B', size=10, symbol='diamond')
+            ))
+            
+            # Confidence interval
+            fig.add_trace(go.Scatter(
+                x=list(forecast_years) + list(forecast_years)[::-1],
+                y=list(forecast_2025_2030['yhat_upper']) + list(forecast_2025_2030['yhat_lower'])[::-1],
+                fill='toself',
+                fillcolor='rgba(255, 107, 107, 0.2)',
+                line=dict(color='rgba(255,255,255,0)'),
+                name='95% Confidence Interval'
+            ))
+            
+            fig.update_layout(
+                title=dict(
+                    text="Pakistan Tourism Forecast 2025-2030 (Prophet Model)",
+                    font=dict(color='#00FFFF', size=22),
+                    x=0.5
+                ),
+                xaxis=dict(
+                    title=dict(text="Year", font=dict(color='#00FFFF', size=14)),
+                    tickfont=dict(color='#FFFFFF', size=12),
+                    gridcolor='rgba(255,255,255,0.1)',
+                    showgrid=True,
+                    tickvals=list(range(2015, 2031, 2))
+                ),
+                yaxis=dict(
+                    title=dict(text="Tourists (Millions)", font=dict(color='#00FFFF', size=14)),
+                    tickfont=dict(color='#FFFFFF', size=12),
+                    gridcolor='rgba(255,255,255,0.1)',
+                    showgrid=True
+                ),
+                legend=dict(
+                    font=dict(color='#FFFFFF', size=12),
+                    bgcolor='rgba(0,0,0,0.5)',
+                    x=0.02,
+                    y=0.98
+                ),
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                height=550,
+                hovermode='x unified'
+            )
+            
+            st.plotly_chart(fig, use_container_width=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+            # Forecast Data Table
+            st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title"><i class="fas fa-table"></i> Detailed Forecast Table (2025-2030)</div>', unsafe_allow_html=True)
+            
+            forecast_table = pd.DataFrame({
+                'Year': forecast_2025_2030['ds'].dt.year,
+                'Predicted Tourists (M)': forecast_2025_2030['yhat'].round(1),
+                'Lower Bound (M)': forecast_2025_2030['yhat_lower'].round(1),
+                'Upper Bound (M)': forecast_2025_2030['yhat_upper'].round(1),
+                'Confidence Level': '95%'
+            })
+            st.dataframe(forecast_table, use_container_width=True, hide_index=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+            # Model Components (Trend + Seasonality)
+            st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title"><i class="fas fa-chart-line"></i> Model Components: Trend & Seasonality</div>', unsafe_allow_html=True)
+            
+            fig_components = model.plot_components(forecast)
+            st.pyplot(fig_components)
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+            # Key Insights
+            st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title"><i class="fas fa-lightbulb"></i> Key Forecast Insights</div>', unsafe_allow_html=True)
+            
+            # Calculate insights
+            growth_2025_2030 = ((forecast_2025_2030['yhat'].iloc[-1] - forecast_2025_2030['yhat'].iloc[0]) / forecast_2025_2030['yhat'].iloc[0]) * 100
+            peak_year = forecast_2025_2030.loc[forecast_2025_2030['yhat'].idxmax(), 'ds'].year
+            peak_value = forecast_2025_2030['yhat'].max()
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.markdown(f"""
+                <div style="background: rgba(0,255,136,0.1); border-radius: 10px; padding: 15px;">
+                    <i class="fas fa-chart-line" style="color: #00FF88;"></i>
+                    <strong style="color: #00FF88;">Growth Projection</strong>
+                    <p style="color: #D0D8E0; margin-top: 10px;">
+                        Tourism is projected to <strong style="color: #00FF88;">{'increase' if growth_2025_2030 > 0 else 'decrease'} by {abs(growth_2025_2030):.1f}%</strong> 
+                        from 2025 to 2030.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with col2:
+                st.markdown(f"""
+                <div style="background: rgba(0,255,255,0.1); border-radius: 10px; padding: 15px;">
+                    <i class="fas fa-calendar" style="color: #00FFFF;"></i>
+                    <strong style="color: #00FFFF;">Peak Year</strong>
+                    <p style="color: #D0D8E0; margin-top: 10px;">
+                        The highest tourist arrival is expected in <strong style="color: #00FFFF;">{int(peak_year)}</strong> 
+                        with approximately <strong style="color: #00FFFF;">{peak_value:.1f}M visitors</strong>.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            st.markdown("""
+            <div style="margin-top: 15px; padding: 12px; background: rgba(0,255,255,0.05); border-radius: 8px;">
+                <i class="fas fa-info-circle" style="color: #00FFFF;"></i>
+                <strong style="color: #00FFFF;">Why Prophet Model?</strong>
+                <p style="color: #B0C4DE; margin-top: 8px; font-size: 0.85rem;">
+                    Facebook Prophet handles seasonality patterns, missing data, and trend changes better than Linear Regression.
+                    It provides confidence intervals and captures yearly tourism patterns automatically.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+    except ImportError:
+        st.error("""
+        <div style="padding: 20px; background: rgba(255,0,0,0.1); border-radius: 10px;">
+            <i class="fas fa-exclamation-triangle" style="color: #FF6B6B; font-size: 1.5rem;"></i>
+            <h3 style="color: #FF6B6B;">Prophet Model Not Installed</h3>
+            <p style="color: #D0D8E0;">Please run the following command in your terminal:</p>
+            <code style="background: #1a1a2e; padding: 10px; display: block; border-radius: 5px;">pip install prophet</code>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Fallback to Linear Regression
+        st.markdown("### Using Linear Regression (Fallback)")
         X = filtered_df[['Year']].values
         y = filtered_df['Total_Tourists'].values
         
@@ -477,41 +690,15 @@ elif selected_page == "Forecast":
         with col3:
             st.metric("Annual Growth", f"{model.coef_[0]:.2f}M")
         
-        st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-        
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=filtered_df['Year'], y=filtered_df['Total_Tourists'],
                                  mode='lines+markers', name='Historical',
-                                 line=dict(color='#00FFFF', width=3),
-                                 marker=dict(color='#00FFFF', size=8)))
+                                 line=dict(color='#00FFFF', width=3)))
         fig.add_trace(go.Scatter(x=future_years.flatten(), y=predictions,
                                  mode='lines+markers', name='Forecast',
-                                 line=dict(color='#FF6B6B', width=3, dash='dash'),
-                                 marker=dict(color='#FF6B6B', size=8)))
-        fig.update_layout(
-            title=dict(text="Tourism Forecast 2025-2030", font=dict(color='#00FFFF', size=20)),
-            xaxis=dict(title='Year', title_font_color='#00FFFF', tickfont_color='#FFFFFF', gridcolor='rgba(255,255,255,0.1)'),
-            yaxis=dict(title='Tourists (Millions)', title_font_color='#00FFFF', tickfont_color='#FFFFFF', gridcolor='rgba(255,255,255,0.1)'),
-            legend=dict(font_color='#FFFFFF'),
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            height=500,
-            hovermode='x unified'
-        )
+                                 line=dict(color='#FF6B6B', width=3, dash='dash')))
+        fig.update_layout(title="Tourism Forecast (Linear Regression)", template='plotly_white', height=500)
         st.plotly_chart(fig, use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        forecast_df = pd.DataFrame({
-            'Year': future_years.flatten(),
-            'Predicted Tourists (M)': predictions.round(1)
-        })
-        st.dataframe(forecast_df, use_container_width=True)
-        
-        total_growth = ((predictions[-1] - predictions[0]) / predictions[0]) * 100
-        st.success(f"Forecast Insight: Tourism is projected to grow by {total_growth:.1f}% from 2025 to 2030.")
-    else:
-        st.warning("Not enough data for forecasting. Need at least 3 years of data.")
-
 # ==================== DATA PAGE ====================
 elif selected_page == "Data":
     st.markdown('<div class="main-title">Dataset Explorer</div>', unsafe_allow_html=True)
