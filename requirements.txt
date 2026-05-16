@@ -6,3 +6,9 @@ plotly
 matplotlib
 seaborn
 openpyxl
+streamlit
+pandas
+numpy
+plotly
+scikit-learn
+prophet
