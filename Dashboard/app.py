@@ -454,45 +454,71 @@ if selected_page == "Dashboard":
     st.plotly_chart(fig5, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ==================== FORECAST PAGE WITH PROPHET ====================
-elif selected_page == "Forecast":
+# ==================== FORECAST PAGE ====================
+elif page == "Forecast":
     st.markdown('<div class="main-title">AI-Powered Forecast 2025-2030</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle"><i class="fas fa-brain"></i> Facebook Prophet Time Series Model</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Facebook Prophet Time Series Model</div>', unsafe_allow_html=True)
     
-    if len(filtered_df) >= 3:
-        # Try to use Prophet
+    # Force metric colours
+    st.markdown("""
+    <style>
+        [data-testid="stMetric"] { background: #1A2A4A; border-radius: 12px; padding: 15px; border: 1px solid #00FFFF; margin: 5px 0; }
+        [data-testid="stMetric"] label { color: #00FFFF !important; font-size: 0.85rem !important; font-weight: 600 !important; }
+        [data-testid="stMetric"] .stMetricValue { color: #FFFFFF !important; font-size: 1.8rem !important; font-weight: 700 !important; }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    if len(df_filtered) >= 3:
         try:
             from prophet import Prophet
             
-            with st.spinner("🔄 Training Prophet Model on tourism data..."):
-                # Prepare data for Prophet
-                prophet_df = pd.DataFrame({
-                    'ds': pd.to_datetime(filtered_df['Year'].astype(str) + '-01-01'),
-                    'y': filtered_df['Total_Tourists'].values
-                })
-                
-                # Initialize and train Prophet
-                model = Prophet(
-                    yearly_seasonality=True,
-                    weekly_seasonality=False,
-                    daily_seasonality=False,
-                    interval_width=0.95
-                )
-                model.fit(prophet_df)
-                
-                # Create future dataframe for 2025-2030
-                future = model.make_future_dataframe(periods=6, freq='YS')
-                forecast = model.predict(future)
-                
-                # Get forecast for 2025-2030
-                forecast_2025_2030 = forecast[forecast['ds'].dt.year >= 2025].copy()
-                
-                # Calculate accuracy metrics
-                train_pred = model.predict(prophet_df)
-                from sklearn.metrics import mean_absolute_error, r2_score
-                mae = mean_absolute_error(prophet_df['y'], train_pred['yhat'][:len(prophet_df)])
-                r2 = r2_score(prophet_df['y'], train_pred['yhat'][:len(prophet_df)])
+            prophet_df = pd.DataFrame({
+                'ds': pd.to_datetime(df_filtered['Year'].astype(str) + '-01-01'),
+                'y': df_filtered['Total_Tourists'].values
+            })
             
+            model = Prophet(yearly_seasonality=True, interval_width=0.95)
+            model.fit(prophet_df)
+            
+            future = model.make_future_dataframe(periods=6, freq='YS')
+            forecast = model.predict(future)
+            forecast_2025_2030 = forecast[forecast['ds'].dt.year >= 2025]
+            
+            train_pred = model.predict(prophet_df)
+            r2 = r2_score(prophet_df['y'], train_pred['yhat'][:len(prophet_df)])
+            mae = mean_absolute_error(prophet_df['y'], train_pred['yhat'][:len(prophet_df)])
+            pred_2030 = forecast_2025_2030[forecast_2025_2030['ds'].dt.year == 2030]['yhat'].values[0]
+            lower_2030 = forecast_2025_2030[forecast_2025_2030['ds'].dt.year == 2030]['yhat_lower'].values[0]
+            upper_2030 = forecast_2025_2030[forecast_2025_2030['ds'].dt.year == 2030]['yhat_upper'].values[0]
+            
+            # METRICS - Now clearly visible
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.metric("Model R² Score", f"{r2:.3f}")
+            with col2:
+                st.metric("Mean Absolute Error", f"{mae:.2f}M")
+            with col3:
+                st.metric("2030 Prediction", f"{pred_2030:.1f}M")
+            with col4:
+                st.metric("95% Confidence", f"{lower_2030:.1f} - {upper_2030:.1f}M")
+            
+            # Chart
+            st.markdown('<div class="chart-card">', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title">Forecast Visualization</div>', unsafe_allow_html=True)
+            
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=df_filtered['Year'], y=df_filtered['Total_Tourists'], mode='lines+markers', name='Historical', line=dict(color='#00FFFF', width=3)))
+            fig.add_trace(go.Scatter(x=forecast_2025_2030['ds'].dt.year, y=forecast_2025_2030['yhat'], mode='lines+markers', name='Prophet Forecast', line=dict(color='#FF6B6B', width=3, dash='dash')))
+            fig.add_trace(go.Scatter(x=list(forecast_2025_2030['ds'].dt.year)+list(forecast_2025_2030['ds'].dt.year)[::-1], y=list(forecast_2025_2030['yhat_upper'])+list(forecast_2025_2030['yhat_lower'])[::-1], fill='toself', fillcolor='rgba(255,107,107,0.2)', line=dict(color='rgba(0,0,0,0)'), name='95% Confidence'))
+            fig.add_vline(x=2020, line_dash="dash", line_color="#FF4444", annotation_text="COVID-19", annotation_font_color="#FF4444")
+            fig.update_layout(xaxis_title="Year", yaxis_title="Tourists (Millions)", template='plotly_dark', height=500, plot_bgcolor='#1A2A4A', paper_bgcolor='#1A2A4A')
+            st.plotly_chart(fig, use_container_width=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+        except ImportError:
+            st.error("Prophet not installed. Run: pip install prophet")
+    else:
+        st.warning("Not enough data")
             # ========== METRICS CARDS ==========
             col1, col2, col3, col4 = st.columns(4)
             
@@ -628,7 +654,7 @@ elif selected_page == "Forecast":
             
             with col2:
                 st.markdown(f"""
-                <div style="background: rgba(0,255,136,0.15); border-radius: 12px; padding: 15px; text-align: center;">
+                <div style="background: rgba(0,255,136,0.15); border-radius: 12px; padding: 15px; text-align: center; text-colo ;">
                     <div style="font-size: 2rem;">🔄</div>
                     <div style="font-size: 1.6rem; font-weight: bold; color: #00FF88;">{recovery:.0f}%</div>
                     <div style="color: #B0C4DE;">Recovery Rate (vs Pre-COVID)</div>
