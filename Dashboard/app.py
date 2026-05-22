@@ -6,11 +6,16 @@ import plotly.graph_objects as go
 from sklearn.linear_model import LinearRegression
 import os
 
+from PIL import Image
+
+favicon = Image.open("Dashboard/favicon.png")
+
 st.set_page_config(
     page_title="Pakistan Tourism Analytics",
-    page_icon="image/favicon.png",
+    page_icon=favicon,   # <-- replace the old string
     layout="wide",
     initial_sidebar_state="expanded"
+
 )
 
 st.markdown("""
