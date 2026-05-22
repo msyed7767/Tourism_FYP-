@@ -13,7 +13,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ==================== CSS ====================
 st.markdown("""
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -26,88 +25,244 @@ st.markdown("""
         background: linear-gradient(135deg, #0B1A2E 0%, #1B2F44 50%, #0F1A2A 100%);
     }
 
+    /* ── SIDEBAR ── */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #0A1622 0%, #0D1B2A 100%);
-        border-right: 1px solid rgba(0, 255, 255, 0.15);
+        background: #07111E !important;
+        border-right: 1px solid rgba(0,255,255,0.12);
     }
-    [data-testid="stSidebar"] * { color: #E8EDF2 !important; }
+    [data-testid="stSidebar"] * { color: #C8D8E8 !important; }
 
+    .brand-block {
+        padding: 28px 0 20px 0;
+        text-align: center;
+        border-bottom: 1px solid rgba(0,255,255,0.1);
+        margin-bottom: 8px;
+    }
+    .brand-icon {
+        width: 52px; height: 52px;
+        background: linear-gradient(135deg, #00FFFF22, #00B4D822);
+        border: 1px solid rgba(0,255,255,0.35);
+        border-radius: 14px;
+        display: inline-flex; align-items: center; justify-content: center;
+        margin-bottom: 12px;
+    }
+    .brand-icon i { font-size: 1.4rem; color: #00FFFF; }
+    .brand-name {
+        font-size: 0.85rem; font-weight: 700; letter-spacing: 2.5px;
+        color: #E8F4FF !important; text-transform: uppercase;
+    }
+    .brand-sub {
+        font-size: 0.58rem; letter-spacing: 4px;
+        color: #4A6A8A !important; margin-top: 3px; text-transform: uppercase;
+    }
+
+    .nav-section {
+        padding: 16px 16px 8px 16px;
+    }
+    .nav-label {
+        font-size: 0.58rem; letter-spacing: 2.5px; color: #3A6080 !important;
+        text-transform: uppercase; margin-bottom: 8px; padding-left: 4px;
+    }
+
+    .sidebar-divider {
+        border: none; border-top: 1px solid rgba(0,255,255,0.07);
+        margin: 4px 16px;
+    }
+
+    .metric-block {
+        margin: 0 14px 8px 14px;
+        background: rgba(0,255,255,0.04);
+        border: 1px solid rgba(0,255,255,0.1);
+        border-radius: 10px;
+        padding: 12px 14px;
+    }
+    .metric-block .m-label {
+        font-size: 0.6rem; letter-spacing: 2px;
+        color: #3A6080 !important; text-transform: uppercase; margin-bottom: 4px;
+    }
+    .metric-block .m-label i { color: #00FFFF !important; margin-right: 5px; }
+    .metric-block .m-value {
+        font-size: 1.35rem; font-weight: 700; color: #00FFFF !important; line-height: 1;
+    }
+    .metric-block .m-sub {
+        font-size: 0.62rem; color: #4A7A9A !important; margin-top: 3px;
+    }
+
+    .status-row {
+        display: flex; align-items: center; gap: 8px;
+        padding: 5px 0; font-size: 0.72rem; color: #6A90B0 !important;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .dot-green { background:#00FF88; box-shadow: 0 0 6px #00FF88; }
+    .dot-cyan  { background:#00FFFF; box-shadow: 0 0 6px #00FFFF; }
+    .dot-blue  { background:#00B4D8; box-shadow: 0 0 6px #00B4D8; }
+
+    /* ── MAIN CONTENT ── */
     .main-title {
-        font-size: 2rem; font-weight: 700;
-        background: linear-gradient(135deg, #00FFFF 0%, #00B4D8 100%);
+        font-size: 2.1rem; font-weight: 800;
+        background: linear-gradient(135deg, #00FFFF 0%, #00B4D8 60%, #0090B8 100%);
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        text-align: center; margin-bottom: 10px;
+        text-align: center; margin-bottom: 6px; letter-spacing: -0.5px;
     }
+    .main-title i { margin-right: 10px; }
     .subtitle {
-        text-align: center; color: #B0C4DE;
-        font-size: 0.85rem; margin-bottom: 30px;
+        text-align: center; color: #6A90B0;
+        font-size: 0.82rem; margin-bottom: 28px; letter-spacing: 0.5px;
     }
-    .executive-card {
-        background: linear-gradient(135deg, rgba(0,255,255,0.08) 0%, rgba(0,180,216,0.03) 100%);
-        border-left: 4px solid #00FFFF; border-radius: 12px;
-        padding: 18px 22px; margin: 15px 0;
-    }
-    .executive-card p { color: #D0D8E0; font-size: 0.9rem; line-height: 1.6; }
+    .subtitle i { margin-right: 5px; color: #00FFFF; }
 
+    .exec-card {
+        background: linear-gradient(135deg, rgba(0,255,255,0.06), rgba(0,180,216,0.02));
+        border-left: 3px solid #00FFFF;
+        border-radius: 10px; padding: 16px 20px; margin-bottom: 24px;
+    }
+    .exec-card p {
+        color: #B0C8E0; font-size: 0.88rem; line-height: 1.65; margin: 0;
+    }
+    .exec-card strong { color: #E8F4FF; }
+    .exec-card .highlight-green { color: #00FF88; font-weight: 600; }
+    .exec-card .highlight-cyan  { color: #00FFFF; font-weight: 600; }
+
+    /* KPI cards */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 24px; }
     .kpi-card {
-        background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
-        backdrop-filter: blur(12px); border-radius: 16px; padding: 20px;
-        text-align: center; border: 1px solid rgba(0,255,255,0.25);
-        transition: all 0.3s ease;
+        background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+        border: 1px solid rgba(0,255,255,0.18);
+        border-radius: 14px; padding: 20px 16px; text-align: center;
+        transition: transform .25s, border-color .25s;
     }
-    .kpi-card:hover { transform: translateY(-5px); border-color: #00FFFF; }
-    .kpi-icon {
-        font-size: 1.6rem;
-        background: linear-gradient(135deg, #00FFFF, #00B4D8);
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        margin-bottom: 10px;
+    .kpi-card:hover { transform: translateY(-4px); border-color: rgba(0,255,255,0.5); }
+    .kpi-card .k-icon {
+        font-size: 1.4rem; color: #00FFFF;
+        background: rgba(0,255,255,0.1); border-radius: 10px;
+        width: 44px; height: 44px; display: inline-flex;
+        align-items: center; justify-content: center; margin-bottom: 12px;
     }
-    .kpi-value { font-size: 1.8rem; font-weight: 700; color: #00FFFF; }
-    .kpi-label { font-size: 0.7rem; color: #B0C4DE; letter-spacing: 1px; margin-top: 8px; text-transform: uppercase; }
+    .kpi-card .k-value {
+        font-size: 1.75rem; font-weight: 700; color: #FFFFFF;
+        line-height: 1; margin-bottom: 6px;
+    }
+    .kpi-card .k-label {
+        font-size: 0.65rem; color: #5A8AAA;
+        letter-spacing: 1.8px; text-transform: uppercase;
+    }
 
+    /* Chart cards */
     .chart-card {
-        background: rgba(255,255,255,0.05); border-radius: 16px;
-        padding: 18px; margin: 10px 0; border: 1px solid rgba(0,255,255,0.1);
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(0,255,255,0.08);
+        border-radius: 14px; padding: 20px; margin-bottom: 16px;
     }
-    .chart-title {
-        font-size: 1rem; font-weight: 600; color: #00FFFF;
-        margin-bottom: 15px; padding-bottom: 8px;
-        border-bottom: 2px solid rgba(0,255,255,0.3); display: block;
+    .chart-header {
+        display: flex; align-items: center; gap: 10px;
+        margin-bottom: 16px; padding-bottom: 12px;
+        border-bottom: 1px solid rgba(0,255,255,0.1);
     }
-    .chart-title i { margin-right: 8px; }
+    .chart-icon {
+        width: 32px; height: 32px; border-radius: 8px;
+        background: rgba(0,255,255,0.1);
+        display: inline-flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+    }
+    .chart-icon i { font-size: 0.85rem; color: #00FFFF; }
+    .chart-title { font-size: 0.92rem; font-weight: 600; color: #D0E8F8; }
+    .chart-sub   { font-size: 0.7rem; color: #4A7A9A; margin-top: 1px; }
 
+    /* Streamlit metric overrides */
+    [data-testid="stMetric"] {
+        background: rgba(0,255,255,0.06) !important;
+        border: 1px solid rgba(0,255,255,0.15) !important;
+        border-radius: 12px !important; padding: 18px !important;
+    }
+    [data-testid="stMetricLabel"] p {
+        color: #7AAAC8 !important; font-size: 0.75rem !important;
+        font-weight: 500 !important; letter-spacing: 0.5px !important;
+    }
+    [data-testid="stMetricValue"] {
+        color: #FFFFFF !important; font-size: 1.7rem !important;
+        font-weight: 700 !important;
+    }
+    [data-testid="stMetricDelta"] { color: #00FF88 !important; }
+
+    /* Footer */
     .footer {
-        text-align: center; padding: 20px; margin-top: 35px;
-        border-top: 1px solid rgba(0,255,255,0.1);
-        color: #7A8EA0; font-size: 0.7rem;
+        text-align: center; padding: 24px 0 16px 0;
+        margin-top: 40px; border-top: 1px solid rgba(0,255,255,0.07);
+        color: #3A5A7A; font-size: 0.68rem; letter-spacing: 0.5px;
     }
-    .footer i { margin-right: 4px; color: #00FFFF; }
+    .footer i { color: #00FFFF; margin-right: 4px; }
+    .footer span { margin: 0 10px; }
 
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 10px; }
-    .status-green { background-color: #00FF88; box-shadow: 0 0 8px #00FF88; }
-    .status-cyan  { background-color: #00FFFF; box-shadow: 0 0 8px #00FFFF; }
-
-    .sidebar-metric {
-        background: rgba(0,255,255,0.05); border-radius: 10px;
-        padding: 10px 12px; margin: 8px 0; border-left: 2px solid #00FFFF;
+    /* Streamlit radio fix */
+    [data-testid="stRadio"] > div { gap: 4px !important; }
+    [data-testid="stRadio"] label {
+        border-radius: 8px !important;
+        padding: 8px 12px !important;
+        transition: background .2s !important;
     }
-    .sidebar-metric .label { font-size: 0.65rem; color: #7A8EA0; text-transform: uppercase; letter-spacing: 1px; }
-    .sidebar-metric .label i { margin-right: 5px; color: #00FFFF; }
-    .sidebar-metric .value { font-size: 1.2rem; font-weight: bold; color: #00FFFF; }
-
-    [data-testid="stMetric"] { background: rgba(0,255,255,0.08); border-radius: 12px; padding: 15px; }
-    [data-testid="stMetric"] label { color: #00FFFF !important; font-weight: 600 !important; }
-
-    .section-header {
-        font-size: 0.7rem; color: #00FFFF; margin-bottom: 10px;
-        text-transform: uppercase; letter-spacing: 2px;
+    [data-testid="stRadio"] label:hover {
+        background: rgba(0,255,255,0.07) !important;
     }
-    .section-header i { margin-right: 6px; }
+
+    /* Selectbox */
+    [data-testid="stSelectbox"] > div > div {
+        background: rgba(0,255,255,0.05) !important;
+        border: 1px solid rgba(0,255,255,0.2) !important;
+        border-radius: 8px !important; color: #C8D8E8 !important;
+    }
+
+    /* Dataframe */
+    [data-testid="stDataFrame"] { border-radius: 10px; overflow: hidden; }
+
+    /* Download button */
+    [data-testid="stDownloadButton"] button {
+        background: rgba(0,255,255,0.08) !important;
+        border: 1px solid rgba(0,255,255,0.3) !important;
+        color: #00FFFF !important; border-radius: 8px !important;
+        font-weight: 600 !important; letter-spacing: 0.5px !important;
+    }
+    [data-testid="stDownloadButton"] button:hover {
+        background: rgba(0,255,255,0.18) !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
 
-# ==================== DATA LOADING ====================
+# ── PLOT DEFAULTS (no title, no height — add per chart) ──────────────────────
+def plot_layout(h=400, xtitle='', ytitle=''):
+    return dict(
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        font=dict(color='#FFFFFF', family='Inter'),
+        xaxis=dict(title=xtitle, title_font=dict(color='#7AAAC8', size=11),
+                   tickfont=dict(color='#8AAAC0', size=10),
+                   gridcolor='rgba(255,255,255,0.06)', zeroline=False),
+        yaxis=dict(title=ytitle, title_font=dict(color='#7AAAC8', size=11),
+                   tickfont=dict(color='#8AAAC0', size=10),
+                   gridcolor='rgba(255,255,255,0.06)', zeroline=False),
+        legend=dict(font=dict(color='#A0C0D8', size=10),
+                    bgcolor='rgba(0,0,0,0)', borderwidth=0),
+        margin=dict(l=10, r=10, t=10, b=10),
+        height=h,
+    )
+
+
+def chart_card(icon, title, subtitle=''):
+    sub_html = f'<div class="chart-sub">{subtitle}</div>' if subtitle else ''
+    st.markdown(f"""
+    <div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-icon"><i class="fas fa-{icon}"></i></div>
+        <div><div class="chart-title">{title}</div>{sub_html}</div>
+      </div>
+    """, unsafe_allow_html=True)
+
+
+def end_card():
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+# ── DATA ─────────────────────────────────────────────────────────────────────
 @st.cache_data
 def load_data():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -117,447 +272,397 @@ def load_data():
         'Data/raw/pakistan_tourism_dataset.csv',
         'data/raw/pakistan_tourism_dataset.csv',
     ]
-
     df = None
-    for path in paths:
-        if os.path.exists(path):
-            df = pd.read_csv(path)
+    for p in paths:
+        if os.path.exists(p):
+            df = pd.read_csv(p)
             break
 
     if df is None:
         st.warning("CSV not found — showing sample data. Run from TOURISM_FYP root folder.")
-        data = {
-            'Year': [2015, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-            'Province': ['Punjab', 'Sindh', 'Punjab', 'Balochistan', 'Gilgit-Baltistan',
-                         'Khyber Pakhtunkhwa', 'Punjab', 'Sindh', 'Gilgit-Baltistan',
-                         'Khyber Pakhtunkhwa', 'Punjab'],
-            'City': ['Lahore', 'Karachi', 'Islamabad', 'Ziarat', 'Skardu',
-                     'Naran', 'Taxila', 'Hyderabad', 'Fairy Meadows', 'Chitral', 'Murree'],
-            'Destination_Type': ['Historical', 'Urban', 'Urban', 'Nature', 'Mountain',
-                                  'Nature', 'Historical', 'Cultural', 'Mountain', 'Nature', 'Hill Station'],
-            'Domestic_Tourists':      [4500000, 3800000, 2000000, 350000, 800000,
-                                        1100000, 500000, 650000, 450000, 550000, 2500000],
-            'International_Tourists': [350000, 420000, 500000, 12000, 120000,
-                                        60000, 15000, 22000, 90000, 40000, 180000],
-            'Peak_Season':  ['Winter', 'Winter', 'Spring', 'Summer', 'Summer',
-                             'Summer', 'Winter', 'Winter', 'Summer', 'Summer', 'Summer'],
-            'Average_Temperature_C': [18, 22, 20, 14, 9, 12, 19, 25, 7, 11, 13],
-            'Average_Cost_USD':      [300, 350, 320, 220, 450, 300, 200, 210, 500, 280, 260],
-            'Main_Attraction': ['Badshahi Mosque', 'Clifton Beach', 'Faisal Mosque',
-                                'Ziarat Juniper Forest', 'Shangrila Lake', 'Saif-ul-Malook Lake',
-                                'Taxila Museum', 'Pakka Qila', 'Nanga Parbat View',
-                                'Kalash Valley', 'Mall Road Murree'],
-            'Safety_Rating':           [4, 3, 5, 3, 5, 4, 4, 3, 5, 4, 4],
-            'Accommodation_Type':      ['Hotels', 'Hotels', 'Hotels', 'Guest Houses', 'Lodges',
-                                         'Hotels', 'Hotels', 'Guest Houses', 'Camps', 'Guest Houses', 'Hotels'],
-            'Transport_Accessibility': ['High', 'High', 'High', 'Low', 'Medium',
-                                         'Medium', 'High', 'Medium', 'Low', 'Low', 'High'],
-            'Popularity_Score':        [85, 82, 87, 68, 90, 86, 72, 69, 92, 81, 89],
-        }
-        df = pd.DataFrame(data)
+        df = pd.DataFrame({
+            'Year': [2015,2015,2016,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+            'Province': ['Punjab','Sindh','Punjab','Sindh','Balochistan','Gilgit-Baltistan',
+                         'Khyber Pakhtunkhwa','Punjab','Sindh','Gilgit-Baltistan',
+                         'Khyber Pakhtunkhwa','Punjab'],
+            'City': ['Lahore','Karachi','Islamabad','Thatta','Ziarat','Skardu',
+                     'Naran','Taxila','Hyderabad','Fairy Meadows','Chitral','Murree'],
+            'Destination_Type': ['Historical','Urban','Urban','Historical','Nature','Mountain',
+                                  'Nature','Historical','Cultural','Mountain','Nature','Hill Station'],
+            'Domestic_Tourists':      [4500000,3800000,2000000,700000,350000,800000,
+                                        1100000,500000,650000,450000,550000,2500000],
+            'International_Tourists': [350000,420000,500000,25000,12000,120000,
+                                        60000,15000,22000,90000,40000,180000],
+            'Peak_Season':  ['Winter','Winter','Spring','Winter','Summer','Summer',
+                             'Summer','Winter','Winter','Summer','Summer','Summer'],
+            'Average_Temperature_C': [18,22,20,24,14,9,12,19,25,7,11,13],
+            'Average_Cost_USD':      [300,350,320,180,220,450,300,200,210,500,280,260],
+            'Main_Attraction': ['Badshahi Mosque','Clifton Beach','Faisal Mosque',
+                                'Makli Necropolis','Ziarat Juniper Forest','Shangrila Lake',
+                                'Saif-ul-Malook Lake','Taxila Museum','Pakka Qila',
+                                'Nanga Parbat View','Kalash Valley','Mall Road Murree'],
+            'Safety_Rating':           [4,3,5,3,3,5,4,4,3,5,4,4],
+            'Accommodation_Type':      ['Hotels','Hotels','Hotels','Guest Houses','Guest Houses',
+                                         'Lodges','Hotels','Hotels','Guest Houses','Camps',
+                                         'Guest Houses','Hotels'],
+            'Transport_Accessibility': ['High','High','High','Low','Low','Medium',
+                                         'Medium','High','Medium','Low','Low','High'],
+            'Popularity_Score':        [85,82,87,70,68,90,86,72,69,92,81,89],
+        })
 
     df['Total_Tourists'] = df['Domestic_Tourists'] + df['International_Tourists']
     df['Revenue_M'] = ((df['Total_Tourists'] * df['Average_Cost_USD']) / 1_000_000).round(1)
 
-    year_df = (
-        df.groupby('Year', as_index=False)
-          .agg(
-              Domestic_Tourists=('Domestic_Tourists', 'sum'),
-              International_Tourists=('International_Tourists', 'sum'),
-              Total_Tourists=('Total_Tourists', 'sum'),
-              Revenue_M=('Revenue_M', 'sum'),
-              Popularity_Score=('Popularity_Score', 'mean'),
-          )
-    )
-    year_df['Total_Tourists_M']         = (year_df['Total_Tourists'] / 1_000_000).round(2)
-    year_df['Domestic_Tourists_M']      = (year_df['Domestic_Tourists'] / 1_000_000).round(2)
-    year_df['International_Tourists_M'] = (year_df['International_Tourists'] / 1_000_000).round(2)
-    year_df['YoY_Growth']               = year_df['Total_Tourists_M'].pct_change() * 100
-    year_df['Recovery_Rate']            = (year_df['Total_Tourists_M'] / year_df['Total_Tourists_M'].max()) * 100
-
-    return df, year_df
+    ydf = (df.groupby('Year', as_index=False)
+             .agg(Domestic_Tourists=('Domestic_Tourists','sum'),
+                  International_Tourists=('International_Tourists','sum'),
+                  Total_Tourists=('Total_Tourists','sum'),
+                  Revenue_M=('Revenue_M','sum'),
+                  Popularity_Score=('Popularity_Score','mean')))
+    ydf['Total_Tourists_M']         = (ydf['Total_Tourists'] / 1e6).round(2)
+    ydf['Domestic_Tourists_M']      = (ydf['Domestic_Tourists'] / 1e6).round(2)
+    ydf['International_Tourists_M'] = (ydf['International_Tourists'] / 1e6).round(2)
+    ydf['YoY_Growth']               = ydf['Total_Tourists_M'].pct_change() * 100
+    ydf['Recovery_Rate']            = (ydf['Total_Tourists_M'] / ydf['Total_Tourists_M'].max()) * 100
+    return df, ydf
 
 
-with st.spinner("Loading tourism data..."):
+with st.spinner("Loading data..."):
     df, year_df = load_data()
 
 min_year = int(year_df['Year'].min())
 max_year = int(year_df['Year'].max())
 
 
-# ==================== SIDEBAR ====================
+# ── SIDEBAR ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
-    <div style="text-align:center; padding:20px 0;">
-        <i class="fas fa-mountain" style="font-size:2.5rem; color:#00FFFF;"></i>
-        <div style="font-size:1rem; font-weight:700; margin-top:10px; color:#00FFFF; letter-spacing:1px;">TOURISM ANALYTICS</div>
-        <div style="font-size:0.6rem; color:#7A8EA0; letter-spacing:3px; margin-top:4px;">PAKISTAN</div>
+    <div class="brand-block">
+        <div class="brand-icon"><i class="fas fa-mountain"></i></div>
+        <div class="brand-name">Tourism Analytics</div>
+        <div class="brand-sub">Pakistan</div>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("---")
-
-    st.markdown('<div class="section-header"><i class="fas fa-compass"></i> Navigation</div>', unsafe_allow_html=True)
+    st.markdown('<div class="nav-section"><div class="nav-label">Navigation</div></div>', unsafe_allow_html=True)
     selected_page = st.radio("", ["Dashboard", "Forecast", "Destinations", "Data"], label_visibility="collapsed")
 
-    st.markdown("---")
-
-    st.markdown('<div class="section-header"><i class="fas fa-calendar-alt"></i> Time Range</div>', unsafe_allow_html=True)
+    st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
+    st.markdown('<div class="nav-section"><div class="nav-label">Time Range</div></div>', unsafe_allow_html=True)
     year_range = st.slider("", min_year, max_year, (min_year, max_year), label_visibility="collapsed")
 
-    st.markdown("---")
+    st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
+    st.markdown('<div class="nav-section"><div class="nav-label">Key Metrics</div></div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="section-header"><i class="fas fa-chart-bar"></i> Key Metrics</div>', unsafe_allow_html=True)
-    latest_year_data = year_df[year_df['Year'] == max_year]
-    if not latest_year_data.empty:
-        total_m = latest_year_data['Total_Tourists_M'].values[0]
-        revenue = latest_year_data['Revenue_M'].values[0]
+    latest = year_df[year_df['Year'] == max_year]
+    if not latest.empty:
+        tm = latest['Total_Tourists_M'].values[0]
+        rv = latest['Revenue_M'].values[0]
         st.markdown(f"""
-        <div class="sidebar-metric">
-            <div class="label"><i class="fas fa-users"></i> Total Tourists ({max_year})</div>
-            <div class="value">{total_m:.2f}M</div>
+        <div class="metric-block">
+            <div class="m-label"><i class="fas fa-users"></i>Total Tourists {max_year}</div>
+            <div class="m-value">{tm:.2f}M</div>
+            <div class="m-sub">Domestic + International</div>
         </div>
-        <div class="sidebar-metric">
-            <div class="label"><i class="fas fa-dollar-sign"></i> Revenue ({max_year})</div>
-            <div class="value">${revenue:.0f}M</div>
+        <div class="metric-block">
+            <div class="m-label"><i class="fas fa-dollar-sign"></i>Revenue {max_year}</div>
+            <div class="m-value">${rv:.0f}M</div>
+            <div class="m-sub">Estimated USD</div>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("---")
-
-    st.markdown('<div class="section-header"><i class="fas fa-microchip"></i> System Status</div>', unsafe_allow_html=True)
+    st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
+    st.markdown('<div class="nav-section"><div class="nav-label">System Status</div></div>', unsafe_allow_html=True)
     st.markdown("""
-    <div style="margin:8px 0; font-size:0.8rem;">
-        <span class="status-dot status-green"></span>
-        <span style="color:#B0C4DE;">Data Active</span>
-    </div>
-    <div style="margin:8px 0; font-size:0.8rem;">
-        <span class="status-dot status-green"></span>
-        <span style="color:#B0C4DE;">ML Models Ready</span>
-    </div>
-    <div style="margin:8px 0; font-size:0.8rem;">
-        <span class="status-dot status-cyan"></span>
-        <span style="color:#B0C4DE;">Live Dashboard</span>
+    <div style="padding:0 16px 12px 16px;">
+        <div class="status-row"><span class="dot dot-green"></span>Data Pipeline Active</div>
+        <div class="status-row"><span class="dot dot-cyan"></span>ML Models Loaded</div>
+        <div class="status-row"><span class="dot dot-blue"></span>Live Dashboard</div>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("---")
-    st.markdown('<div style="text-align:center; font-size:0.55rem; color:#4A5A6A; letter-spacing:1px;">FYP 2025 &nbsp;|&nbsp; PTDC</div>', unsafe_allow_html=True)
+    st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
+    st.markdown('<div style="text-align:center;padding:10px 0;font-size:0.58rem;color:#2A4A6A;letter-spacing:1.5px;">TOURISM FYP &nbsp;·&nbsp; 2025</div>', unsafe_allow_html=True)
 
 
-# ---- Filtered data ----
-filtered_year = year_df[(year_df['Year'] >= year_range[0]) & (year_df['Year'] <= year_range[1])].copy()
-filtered_raw  = df[(df['Year'] >= year_range[0]) & (df['Year'] <= year_range[1])].copy()
-
-PLOT_LAYOUT = dict(
-    plot_bgcolor='rgba(0,0,0,0)',
-    paper_bgcolor='rgba(0,0,0,0)',
-    font_color='#FFFFFF',
-    xaxis=dict(gridcolor='rgba(255,255,255,0.1)', title_font_color='#00FFFF', tickfont_color='#FFFFFF'),
-    yaxis=dict(gridcolor='rgba(255,255,255,0.1)', title_font_color='#00FFFF', tickfont_color='#FFFFFF'),
-    legend=dict(font_color='#FFFFFF'),
-    height=400,
-)
+# ── FILTERED DATA ─────────────────────────────────────────────────────────────
+fy  = year_df[(year_df['Year'] >= year_range[0]) & (year_df['Year'] <= year_range[1])].copy()
+fdf = df[(df['Year'] >= year_range[0]) & (df['Year'] <= year_range[1])].copy()
 
 
-# ==================== DASHBOARD PAGE ====================
+# ══════════════════════════════════════════════════════════════════════════════
+# DASHBOARD
+# ══════════════════════════════════════════════════════════════════════════════
 if selected_page == "Dashboard":
-    st.markdown('<div class="main-title"><i class="fas fa-mountain"></i> Pakistan Tourism Intelligence Platform</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle"><i class="fas fa-chart-line"></i> &nbsp; Real-time Analytics &amp; Business Intelligence</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-title"><i class="fas fa-mountain"></i>Pakistan Tourism Intelligence</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle"><i class="fas fa-chart-line"></i>Real-time Analytics &amp; Business Intelligence Platform</div>', unsafe_allow_html=True)
 
-    if len(filtered_year) > 1:
-        latest_t = filtered_year['Total_Tourists_M'].iloc[-1]
-        prev_t   = filtered_year['Total_Tourists_M'].iloc[-2]
-        growth   = ((latest_t - prev_t) / prev_t) * 100
-        best_yr  = filtered_year.loc[filtered_year['Total_Tourists_M'].idxmax(), 'Year']
-        best_val = filtered_year['Total_Tourists_M'].max()
-        cur_yr   = int(filtered_year['Year'].iloc[-1])
-
+    if len(fy) > 1:
+        lt = fy['Total_Tourists_M'].iloc[-1]
+        pt = fy['Total_Tourists_M'].iloc[-2]
+        gr = ((lt - pt) / pt) * 100
+        by = int(fy.loc[fy['Total_Tourists_M'].idxmax(), 'Year'])
+        bv = fy['Total_Tourists_M'].max()
+        cy = int(fy['Year'].iloc[-1])
         st.markdown(f"""
-        <div class="executive-card">
-            <p>
-                <i class="fas fa-chart-line" style="color:#00FFFF; margin-right:8px;"></i>
-                <strong>EXECUTIVE SUMMARY</strong><br>
-                Pakistan's tourism sector is experiencing
-                <strong style="color:#00FF88;">{growth:.1f}% YoY growth</strong>
-                with <strong style="color:#00FFFF;">{latest_t:.2f}M tourists</strong> in {cur_yr}.
-                Best performing year: <strong style="color:#00FFFF;">{int(best_yr)}</strong>
-                with <strong style="color:#00FFFF;">{best_val:.2f}M visitors</strong>.
-            </p>
-        </div>
+        <div class="exec-card"><p>
+            <i class="fas fa-chart-line" style="color:#00FFFF;margin-right:8px;"></i>
+            <strong>Executive Summary</strong> &nbsp;—&nbsp;
+            Pakistan's tourism is recording a
+            <span class="highlight-green">{gr:.1f}% year-on-year growth</span>
+            with <span class="highlight-cyan">{lt:.2f}M visitors</span> in {cy}.
+            Peak performance was in <span class="highlight-cyan">{by}</span>
+            at <span class="highlight-cyan">{bv:.2f}M tourists</span>.
+        </p></div>
         """, unsafe_allow_html=True)
 
-    col1, col2, col3, col4 = st.columns(4)
-    cur_t    = filtered_year['Total_Tourists_M'].iloc[-1] if not filtered_year.empty else 0
-    cur_rev  = filtered_year['Revenue_M'].iloc[-1]        if not filtered_year.empty else 0
-    g_rate   = filtered_year['YoY_Growth'].iloc[-1]       if len(filtered_year) > 1   else 0
-    rec_rate = filtered_year['Recovery_Rate'].iloc[-1]    if not filtered_year.empty else 0
+    ct = fy['Total_Tourists_M'].iloc[-1]  if not fy.empty else 0
+    cr = fy['Revenue_M'].iloc[-1]         if not fy.empty else 0
+    cg = fy['YoY_Growth'].iloc[-1]        if len(fy) > 1   else 0
+    rr = fy['Recovery_Rate'].iloc[-1]     if not fy.empty else 0
 
-    with col1:
-        st.markdown(f"""
-        <div class="kpi-card">
-            <div class="kpi-icon"><i class="fas fa-users"></i></div>
-            <div class="kpi-value">{cur_t:.2f}M</div>
-            <div class="kpi-label">Total Tourists</div>
-        </div>""", unsafe_allow_html=True)
-
-    with col2:
-        st.markdown(f"""
-        <div class="kpi-card">
-            <div class="kpi-icon"><i class="fas fa-arrow-trend-up"></i></div>
-            <div class="kpi-value">{g_rate:+.1f}%</div>
-            <div class="kpi-label">YoY Growth</div>
-        </div>""", unsafe_allow_html=True)
-
-    with col3:
-        st.markdown(f"""
-        <div class="kpi-card">
-            <div class="kpi-icon"><i class="fas fa-dollar-sign"></i></div>
-            <div class="kpi-value">${cur_rev:.0f}M</div>
-            <div class="kpi-label">Revenue</div>
-        </div>""", unsafe_allow_html=True)
-
-    with col4:
-        st.markdown(f"""
-        <div class="kpi-card">
-            <div class="kpi-icon"><i class="fas fa-rotate"></i></div>
-            <div class="kpi-value">{rec_rate:.0f}%</div>
-            <div class="kpi-label">Recovery Rate</div>
-        </div>""", unsafe_allow_html=True)
+    c1,c2,c3,c4 = st.columns(4)
+    with c1:
+        st.markdown(f'<div class="kpi-card"><div class="k-icon"><i class="fas fa-users"></i></div><div class="k-value">{ct:.2f}M</div><div class="k-label">Total Tourists</div></div>', unsafe_allow_html=True)
+    with c2:
+        color = "#00FF88" if cg >= 0 else "#FF6B6B"
+        st.markdown(f'<div class="kpi-card"><div class="k-icon"><i class="fas fa-arrow-trend-up"></i></div><div class="k-value" style="color:{color};">{cg:+.1f}%</div><div class="k-label">YoY Growth</div></div>', unsafe_allow_html=True)
+    with c3:
+        st.markdown(f'<div class="kpi-card"><div class="k-icon"><i class="fas fa-dollar-sign"></i></div><div class="k-value">${cr:.0f}M</div><div class="k-label">Revenue (USD)</div></div>', unsafe_allow_html=True)
+    with c4:
+        st.markdown(f'<div class="kpi-card"><div class="k-icon"><i class="fas fa-rotate"></i></div><div class="k-value">{rr:.0f}%</div><div class="k-label">Recovery Rate</div></div>', unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Chart 1
-    st.markdown('<div class="chart-card"><span class="chart-title"><i class="fas fa-chart-line"></i> Tourism Growth Trend (Millions)</span>', unsafe_allow_html=True)
-    fig1 = px.line(filtered_year, x='Year', y='Total_Tourists_M', markers=True, template='plotly_dark')
-    fig1.update_traces(line_color='#00FFFF', line_width=3, marker_size=10, marker_color='#00FFFF')
-    fig1.update_layout(**PLOT_LAYOUT, yaxis_title='Tourists (Millions)', xaxis_title='Year')
-    st.plotly_chart(fig1, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    chart_card("chart-line", "Tourism Growth Trend", "Total visitors per year (millions)")
+    fig = px.line(fy, x='Year', y='Total_Tourists_M', markers=True, template='plotly_dark')
+    fig.update_traces(line_color='#00FFFF', line_width=2.5, marker_size=9,
+                      marker_color='#FFFFFF', marker_line_color='#00FFFF', marker_line_width=2)
+    fig.update_layout(**plot_layout(400, 'Year', 'Tourists (Millions)'))
+    st.plotly_chart(fig, use_container_width=True)
+    end_card()
 
     # Chart 2
-    st.markdown('<div class="chart-card"><span class="chart-title"><i class="fas fa-dollar-sign"></i> Revenue Trend (USD Millions)</span>', unsafe_allow_html=True)
-    fig2 = px.area(filtered_year, x='Year', y='Revenue_M', template='plotly_dark', color_discrete_sequence=['#00B4D8'])
-    fig2.update_layout(**PLOT_LAYOUT, yaxis_title='Revenue (USD Millions)', xaxis_title='Year')
+    chart_card("dollar-sign", "Revenue Trend", "Estimated tourism revenue in USD millions")
+    fig2 = px.area(fy, x='Year', y='Revenue_M', template='plotly_dark',
+                   color_discrete_sequence=['#00B4D8'])
+    fig2.update_traces(fill='tozeroy', fillcolor='rgba(0,180,216,0.15)', line_color='#00B4D8', line_width=2.5)
+    fig2.update_layout(**plot_layout(400, 'Year', 'Revenue (USD M)'))
     st.plotly_chart(fig2, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    end_card()
 
     # Chart 3
-    st.markdown('<div class="chart-card"><span class="chart-title"><i class="fas fa-chart-bar"></i> Domestic vs International Tourists</span>', unsafe_allow_html=True)
-    fig3 = px.bar(filtered_year, x='Year',
-                  y=['Domestic_Tourists_M', 'International_Tourists_M'],
+    chart_card("chart-bar", "Domestic vs International", "Comparison of visitor origins per year")
+    fig3 = px.bar(fy, x='Year', y=['Domestic_Tourists_M','International_Tourists_M'],
                   barmode='group', template='plotly_dark',
-                  color_discrete_map={'Domestic_Tourists_M': '#00FFFF', 'International_Tourists_M': '#FF6B6B'},
-                  labels={'value': 'Tourists (Millions)', 'variable': 'Type'})
-    fig3.update_layout(**PLOT_LAYOUT, yaxis_title='Tourists (Millions)', xaxis_title='Year')
+                  color_discrete_map={'Domestic_Tourists_M':'#00FFFF','International_Tourists_M':'#FF6B6B'},
+                  labels={'value':'Tourists (M)','variable':'Type'})
+    fig3.update_layout(**plot_layout(400, 'Year', 'Tourists (Millions)'))
     st.plotly_chart(fig3, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    end_card()
 
     # Chart 4
-    growth_df = filtered_year[['Year', 'YoY_Growth']].dropna()
-    st.markdown('<div class="chart-card"><span class="chart-title"><i class="fas fa-percent"></i> Year-over-Year Growth Rate</span>', unsafe_allow_html=True)
-    fig4 = px.bar(growth_df, x='Year', y='YoY_Growth', template='plotly_dark',
+    chart_card("percent", "Year-over-Year Growth Rate", "Positive = growth, Negative = decline")
+    gdf = fy[['Year','YoY_Growth']].dropna()
+    fig4 = px.bar(gdf, x='Year', y='YoY_Growth', template='plotly_dark',
                   color='YoY_Growth', color_continuous_scale='RdYlGn',
-                  labels={'YoY_Growth': 'Growth Rate (%)'})
-    fig4.update_layout(**PLOT_LAYOUT, yaxis_title='Growth Rate (%)', xaxis_title='Year')
+                  labels={'YoY_Growth':'Growth (%)'})
+    fig4.update_layout(**plot_layout(400, 'Year', 'Growth Rate (%)'))
     st.plotly_chart(fig4, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    end_card()
 
     # Chart 5
-    st.markdown('<div class="chart-card"><span class="chart-title"><i class="fas fa-rotate"></i> Tourism Recovery Rate (%)</span>', unsafe_allow_html=True)
-    fig5 = px.line(filtered_year, x='Year', y='Recovery_Rate', markers=True, template='plotly_dark')
-    fig5.update_traces(line_color='#00FF88', line_width=3, marker_size=8)
-    fig5.update_layout(**PLOT_LAYOUT, yaxis_title='Recovery Rate (%)', xaxis_title='Year')
+    chart_card("rotate", "Recovery Rate", "Recovery relative to peak performance year")
+    fig5 = px.line(fy, x='Year', y='Recovery_Rate', markers=True, template='plotly_dark')
+    fig5.update_traces(line_color='#00FF88', line_width=2.5, marker_size=9,
+                       marker_color='#FFFFFF', marker_line_color='#00FF88', marker_line_width=2)
+    fig5.update_layout(**plot_layout(400, 'Year', 'Recovery Rate (%)'))
     st.plotly_chart(fig5, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    end_card()
 
 
-# ==================== FORECAST PAGE ====================
+# ══════════════════════════════════════════════════════════════════════════════
+# FORECAST
+# ══════════════════════════════════════════════════════════════════════════════
 elif selected_page == "Forecast":
-    st.markdown('<div class="main-title"><i class="fas fa-brain"></i> AI-Powered Forecast 2025–2030</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle"><i class="fas fa-microchip"></i> &nbsp; Linear Regression Forecasting Model</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-title"><i class="fas fa-brain"></i>AI-Powered Forecast 2025–2030</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle"><i class="fas fa-microchip"></i>Linear Regression Forecasting Model</div>', unsafe_allow_html=True)
 
-    if len(filtered_year) >= 3:
-        X = filtered_year[['Year']].values
-        y = filtered_year['Total_Tourists_M'].values
+    if len(fy) >= 3:
+        X  = fy[['Year']].values
+        y  = fy['Total_Tourists_M'].values
+        m  = LinearRegression().fit(X, y)
+        fy_pred = np.arange(2025, 2031).reshape(-1, 1)
+        preds   = m.predict(fy_pred)
+        r2      = m.score(X, y)
 
-        model = LinearRegression()
-        model.fit(X, y)
+        c1, c2, c3 = st.columns(3)
+        with c1: st.metric("Model R² Score",  f"{r2:.3f}")
+        with c2: st.metric("2030 Prediction", f"{preds[-1]:.2f}M tourists")
+        with c3: st.metric("Annual Growth",   f"{m.coef_[0]:.3f}M / year")
 
-        future_years = np.arange(2025, 2031).reshape(-1, 1)
-        predictions  = model.predict(future_years)
-        r2           = model.score(X, y)
+        st.markdown("<br>", unsafe_allow_html=True)
 
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("Model R² Score",  f"{r2:.3f}")
-        with col2:
-            st.metric("2030 Prediction", f"{predictions[-1]:.2f}M tourists")
-        with col3:
-            st.metric("Annual Growth",   f"{model.coef_[0]:.3f}M / year")
-
-        st.markdown("---")
-
+        chart_card("chart-line", "Tourism Forecast 2025–2030", "Historical data + linear regression projection")
         fig = go.Figure()
         fig.add_trace(go.Scatter(
-            x=filtered_year['Year'], y=filtered_year['Total_Tourists_M'],
-            mode='lines+markers', name='Historical Data',
-            line=dict(color='#00FFFF', width=3),
-            marker=dict(size=10, color='#00FFFF')
+            x=fy['Year'], y=fy['Total_Tourists_M'],
+            mode='lines+markers', name='Historical',
+            line=dict(color='#00FFFF', width=2.5),
+            marker=dict(size=9, color='#FFFFFF',
+                        line=dict(color='#00FFFF', width=2))
         ))
         fig.add_trace(go.Scatter(
-            x=future_years.flatten(), y=predictions,
-            mode='lines+markers', name='Forecast 2025–2030',
-            line=dict(color='#FF6B6B', width=3, dash='dash'),
-            marker=dict(size=10, color='#FF6B6B')
+            x=fy_pred.flatten(), y=preds,
+            mode='lines+markers', name='Forecast',
+            line=dict(color='#FF6B6B', width=2.5, dash='dash'),
+            marker=dict(size=9, color='#FFFFFF',
+                        line=dict(color='#FF6B6B', width=2))
         ))
-        fig.add_vline(x=2020, line_dash="dash", line_color="orange",
-                      annotation_text="COVID-19 Impact", annotation_font_color="orange")
-        fig.update_layout(
-            title=dict(text="Pakistan Tourism Forecast 2025–2030", font_color='#00FFFF'),
-            **PLOT_LAYOUT,
-            height=500,
-            xaxis_title='Year',
-            yaxis_title='Tourists (Millions)',
-        )
+        fig.add_vline(x=2020, line_dash="dot", line_color="rgba(255,165,0,0.6)",
+                      annotation_text="COVID-19",
+                      annotation_font=dict(color="rgba(255,165,0,0.9)", size=11))
+        fig.update_layout(**plot_layout(500, 'Year', 'Tourists (Millions)'))
         st.plotly_chart(fig, use_container_width=True)
+        end_card()
 
-        st.markdown("---")
-        st.markdown('<span class="chart-title" style="color:#00FFFF; font-size:1rem; font-weight:600;"><i class="fas fa-table"></i> &nbsp; Year-by-Year Forecast Table</span>', unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
-        forecast_table = pd.DataFrame({
+        chart_card("table", "Year-by-Year Forecast Table", "Predicted tourist arrivals and estimated revenue")
+        tbl = pd.DataFrame({
             'Year': list(range(2025, 2031)),
-            'Predicted Tourists (Millions)': [round(float(p), 2) for p in predictions],
-            'Estimated Revenue (USD M)':     [round(float(p) * 1_000_000 * 280 / 1_000_000, 0) for p in predictions],
+            'Predicted Tourists (M)': [round(float(p), 2) for p in preds],
+            'Est. Revenue (USD M)':   [round(float(p)*1e6*280/1e6, 0) for p in preds],
         })
-        st.dataframe(forecast_table, use_container_width=True, hide_index=True)
-
+        st.dataframe(tbl, use_container_width=True, hide_index=True)
+        end_card()
     else:
-        st.warning("Not enough data for forecasting. Need at least 3 years of data.")
+        st.warning("Not enough data for forecasting — need at least 3 years.")
 
 
-# ==================== DESTINATIONS PAGE ====================
+# ══════════════════════════════════════════════════════════════════════════════
+# DESTINATIONS
+# ══════════════════════════════════════════════════════════════════════════════
 elif selected_page == "Destinations":
-    st.markdown('<div class="main-title"><i class="fas fa-map-location-dot"></i> Destination Insights</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle"><i class="fas fa-magnifying-glass-chart"></i> &nbsp; Explore tourism data by province, city &amp; destination type</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-title"><i class="fas fa-map-location-dot"></i>Destination Insights</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle"><i class="fas fa-magnifying-glass-chart"></i>Explore tourism by province, city &amp; destination type</div>', unsafe_allow_html=True)
 
-    # Chart 1
-    st.markdown('<div class="chart-card"><span class="chart-title"><i class="fas fa-building-columns"></i> Top Cities by Total Tourists</span>', unsafe_allow_html=True)
-    city_df = (filtered_raw.groupby('City', as_index=False)['Total_Tourists']
-                .sum().sort_values('Total_Tourists', ascending=False).head(10))
-    city_df['Total_Tourists_M'] = (city_df['Total_Tourists'] / 1_000_000).round(2)
-    fig_city = px.bar(city_df, x='City', y='Total_Tourists_M', template='plotly_dark',
-                      color='Total_Tourists_M', color_continuous_scale='Teal',
-                      labels={'Total_Tourists_M': 'Tourists (M)'})
-    fig_city.update_layout(**PLOT_LAYOUT, yaxis_title='Tourists (Millions)', xaxis_title='City')
-    st.plotly_chart(fig_city, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    # Chart 1 — Top Cities
+    chart_card("building-columns", "Top Cities by Total Tourists", "Ranked by cumulative visitor count")
+    city_df = (fdf.groupby('City', as_index=False)['Total_Tourists'].sum()
+                  .sort_values('Total_Tourists', ascending=False).head(10))
+    city_df['Total_M'] = (city_df['Total_Tourists'] / 1e6).round(2)
+    fc = px.bar(city_df, x='City', y='Total_M', template='plotly_dark',
+                color='Total_M', color_continuous_scale='Teal',
+                labels={'Total_M':'Tourists (M)'})
+    fc.update_layout(**plot_layout(420, 'City', 'Tourists (Millions)'))
+    st.plotly_chart(fc, use_container_width=True)
+    end_card()
 
-    col1, col2 = st.columns(2)
+    c1, c2 = st.columns(2)
+    with c1:
+        chart_card("map", "Tourists by Province", "Share of total visitors per province")
+        prov = fdf.groupby('Province', as_index=False)['Total_Tourists'].sum()
+        prov['Total_M'] = (prov['Total_Tourists']/1e6).round(2)
+        fp = px.pie(prov, values='Total_M', names='Province', template='plotly_dark',
+                    color_discrete_sequence=px.colors.sequential.Teal)
+        fp.update_traces(textfont_color='#FFFFFF')
+        fp.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)',
+                         font=dict(color='#FFFFFF', family='Inter'),
+                         legend=dict(font=dict(color='#A0C0D8')),
+                         margin=dict(l=10,r=10,t=10,b=10), height=380)
+        st.plotly_chart(fp, use_container_width=True)
+        end_card()
 
-    with col1:
-        st.markdown('<div class="chart-card"><span class="chart-title"><i class="fas fa-map"></i> Tourists by Province</span>', unsafe_allow_html=True)
-        prov_df = filtered_raw.groupby('Province', as_index=False)['Total_Tourists'].sum()
-        prov_df['Total_Tourists_M'] = (prov_df['Total_Tourists'] / 1_000_000).round(2)
-        fig_prov = px.pie(prov_df, values='Total_Tourists_M', names='Province',
-                          template='plotly_dark',
-                          color_discrete_sequence=px.colors.sequential.Teal)
-        fig_prov.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)',
-                                font_color='#FFFFFF', height=400)
-        st.plotly_chart(fig_prov, use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+    with c2:
+        chart_card("layer-group", "Tourists by Destination Type", "Mountain, nature, urban and more")
+        dest = fdf.groupby('Destination_Type', as_index=False)['Total_Tourists'].sum()
+        dest['Total_M'] = (dest['Total_Tourists']/1e6).round(2)
+        fd = px.pie(dest, values='Total_M', names='Destination_Type', template='plotly_dark',
+                    color_discrete_sequence=px.colors.sequential.Blues_r)
+        fd.update_traces(textfont_color='#FFFFFF')
+        fd.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)',
+                         font=dict(color='#FFFFFF', family='Inter'),
+                         legend=dict(font=dict(color='#A0C0D8')),
+                         margin=dict(l=10,r=10,t=10,b=10), height=380)
+        st.plotly_chart(fd, use_container_width=True)
+        end_card()
 
-    with col2:
-        st.markdown('<div class="chart-card"><span class="chart-title"><i class="fas fa-layer-group"></i> Tourists by Destination Type</span>', unsafe_allow_html=True)
-        dest_df = filtered_raw.groupby('Destination_Type', as_index=False)['Total_Tourists'].sum()
-        dest_df['Total_Tourists_M'] = (dest_df['Total_Tourists'] / 1_000_000).round(2)
-        fig_dest = px.pie(dest_df, values='Total_Tourists_M', names='Destination_Type',
-                          template='plotly_dark',
-                          color_discrete_sequence=px.colors.sequential.Blues_r)
-        fig_dest.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)',
-                                font_color='#FFFFFF', height=400)
-        st.plotly_chart(fig_dest, use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+    # Chart — Scatter (fixed: no **PLOT_LAYOUT conflict)
+    chart_card("shield-halved", "Safety Rating vs Popularity Score", "Bubble size = total tourists")
+    fs = px.scatter(fdf, x='Safety_Rating', y='Popularity_Score',
+                    color='Destination_Type', size='Total_Tourists',
+                    hover_data=['City','Province','Main_Attraction'],
+                    template='plotly_dark',
+                    labels={'Safety_Rating':'Safety Rating (1–5)',
+                            'Popularity_Score':'Popularity Score'})
+    fs.update_layout(**plot_layout(450, 'Safety Rating (1–5)', 'Popularity Score'))
+    st.plotly_chart(fs, use_container_width=True)
+    end_card()
 
-    # Chart 4
-    st.markdown('<div class="chart-card"><span class="chart-title"><i class="fas fa-shield-halved"></i> Safety Rating vs Popularity Score</span>', unsafe_allow_html=True)
-    fig_scatter = px.scatter(
-        filtered_raw, x='Safety_Rating', y='Popularity_Score',
-        color='Destination_Type', size='Total_Tourists',
-        hover_data=['City', 'Province', 'Main_Attraction'],
-        template='plotly_dark',
-        labels={'Safety_Rating': 'Safety Rating (1-5)', 'Popularity_Score': 'Popularity Score'}
-    )
-    fig_scatter.update_layout(**PLOT_LAYOUT, height=450)
-    st.plotly_chart(fig_scatter, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    # Chart — Avg Cost
+    chart_card("money-bill-trend-up", "Average Cost by Destination Type", "Mean visitor spend in USD")
+    cost = fdf.groupby('Destination_Type', as_index=False)['Average_Cost_USD'].mean().round(0)
+    fco = px.bar(cost, x='Destination_Type', y='Average_Cost_USD', template='plotly_dark',
+                 color='Average_Cost_USD', color_continuous_scale='Oranges',
+                 labels={'Average_Cost_USD':'Avg Cost (USD)'})
+    fco.update_layout(**plot_layout(400, 'Destination Type', 'Average Cost (USD)'))
+    st.plotly_chart(fco, use_container_width=True)
+    end_card()
 
-    # Chart 5
-    st.markdown('<div class="chart-card"><span class="chart-title"><i class="fas fa-money-bill-trend-up"></i> Average Cost (USD) by Destination Type</span>', unsafe_allow_html=True)
-    cost_df = filtered_raw.groupby('Destination_Type', as_index=False)['Average_Cost_USD'].mean().round(0)
-    fig_cost = px.bar(cost_df, x='Destination_Type', y='Average_Cost_USD',
-                      template='plotly_dark', color='Average_Cost_USD',
-                      color_continuous_scale='Oranges',
-                      labels={'Average_Cost_USD': 'Avg Cost (USD)'})
-    fig_cost.update_layout(**PLOT_LAYOUT, yaxis_title='Average Cost (USD)', xaxis_title='Destination Type')
-    st.plotly_chart(fig_cost, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # Chart 6
-    st.markdown('<div class="chart-card"><span class="chart-title"><i class="fas fa-sun"></i> Peak Season Distribution</span>', unsafe_allow_html=True)
-    season_df = filtered_raw.groupby('Peak_Season', as_index=False)['Total_Tourists'].sum()
-    season_df['Total_Tourists_M'] = (season_df['Total_Tourists'] / 1_000_000).round(2)
-    fig_season = px.bar(season_df, x='Peak_Season', y='Total_Tourists_M',
-                        template='plotly_dark', color='Peak_Season',
-                        color_discrete_sequence=['#00FFFF', '#FF6B6B', '#00FF88', '#FFD700'],
-                        labels={'Total_Tourists_M': 'Tourists (M)'})
-    fig_season.update_layout(**PLOT_LAYOUT, yaxis_title='Tourists (Millions)', xaxis_title='Peak Season')
-    st.plotly_chart(fig_season, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    # Chart — Peak Season
+    chart_card("sun", "Peak Season Distribution", "Total tourists by preferred travel season")
+    sea = fdf.groupby('Peak_Season', as_index=False)['Total_Tourists'].sum()
+    sea['Total_M'] = (sea['Total_Tourists']/1e6).round(2)
+    fse = px.bar(sea, x='Peak_Season', y='Total_M', template='plotly_dark',
+                 color='Peak_Season',
+                 color_discrete_sequence=['#00FFFF','#FF6B6B','#00FF88','#FFD700'],
+                 labels={'Total_M':'Tourists (M)'})
+    fse.update_layout(**plot_layout(400, 'Peak Season', 'Tourists (Millions)'))
+    st.plotly_chart(fse, use_container_width=True)
+    end_card()
 
 
-# ==================== DATA PAGE ====================
+# ══════════════════════════════════════════════════════════════════════════════
+# DATA
+# ══════════════════════════════════════════════════════════════════════════════
 elif selected_page == "Data":
-    st.markdown('<div class="main-title"><i class="fas fa-database"></i> Dataset Explorer</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle"><i class="fas fa-table"></i> &nbsp; Raw Tourism Data — All Columns</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-title"><i class="fas fa-database"></i>Dataset Explorer</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle"><i class="fas fa-table"></i>Raw Tourism Data — All Columns</div>', unsafe_allow_html=True)
 
-    col1, col2, col3, col4 = st.columns(4)
-    with col1: st.metric("Total Records",     len(filtered_raw))
-    with col2: st.metric("Cities",            filtered_raw['City'].nunique())
-    with col3: st.metric("Provinces",         filtered_raw['Province'].nunique())
-    with col4: st.metric("Destination Types", filtered_raw['Destination_Type'].nunique())
+    c1,c2,c3,c4 = st.columns(4)
+    with c1: st.metric("Total Records",     len(fdf))
+    with c2: st.metric("Cities",            fdf['City'].nunique())
+    with c3: st.metric("Provinces",         fdf['Province'].nunique())
+    with c4: st.metric("Destination Types", fdf['Destination_Type'].nunique())
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    provinces = ['All'] + sorted(filtered_raw['Province'].unique().tolist())
-    selected_province = st.selectbox("Filter by Province", provinces)
-    display_df = filtered_raw if selected_province == 'All' else filtered_raw[filtered_raw['Province'] == selected_province]
+    provinces = ['All'] + sorted(fdf['Province'].unique().tolist())
+    sel_prov  = st.selectbox("Filter by Province", provinces)
+    disp      = fdf if sel_prov == 'All' else fdf[fdf['Province'] == sel_prov]
 
-    st.markdown('<div class="chart-card">', unsafe_allow_html=True)
-    st.dataframe(display_df, use_container_width=True, hide_index=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+    chart_card("table", "Tourism Records", f"Showing {len(disp)} records")
+    st.dataframe(disp, use_container_width=True, hide_index=True)
+    end_card()
 
-    csv = display_df.to_csv(index=False).encode()
-    st.download_button(
-        label="Download CSV for Power BI",
-        data=csv,
-        file_name="pakistan_tourism_filtered.csv",
-        mime="text/csv",
-        use_container_width=True
-    )
+    csv = disp.to_csv(index=False).encode()
+    st.download_button("Download CSV for Power BI", csv,
+                       "pakistan_tourism.csv", "text/csv",
+                       use_container_width=True)
 
-    st.markdown("---")
-    st.markdown('<span style="color:#00FFFF; font-size:1rem; font-weight:600;"><i class="fas fa-chart-simple"></i> &nbsp; Quick Statistics</span>', unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
-    st.dataframe(display_df.describe().round(2), use_container_width=True)
+    chart_card("chart-simple", "Quick Statistics", "Descriptive stats for numeric columns")
+    st.dataframe(disp.describe().round(2), use_container_width=True)
+    end_card()
 
 
-# ==================== FOOTER ====================
+# ── FOOTER ───────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="footer">
-    <i class="fas fa-database"></i> Data Source: PTDC | World Bank &nbsp;&nbsp;|&nbsp;&nbsp;
-    <i class="fab fa-python"></i> Python &amp; Streamlit &nbsp;&nbsp;|&nbsp;&nbsp;
-    <i class="fas fa-brain"></i> ML: Linear Regression &nbsp;&nbsp;|&nbsp;&nbsp;
-    <i class="fas fa-graduation-cap"></i> Final Year Project 2025
+    <span><i class="fas fa-database"></i>Data Source: PTDC &amp; World Bank</span>
+    <span><i class="fab fa-python"></i>Python &amp; Streamlit</span>
+    <span><i class="fas fa-brain"></i>ML: Linear Regression</span>
+    <span><i class="fas fa-graduation-cap"></i>Final Year Project 2025</span>
 </div>
 """, unsafe_allow_html=True)
