@@ -8,7 +8,7 @@ import os
 
 st.set_page_config(
     page_title="Pakistan Tourism Analytics",
-    page_icon="",
+    page_icon="image/favicon.png",
     layout="wide",
     initial_sidebar_state="expanded"
 )
